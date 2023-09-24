@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "82207844535",
+    "project_id": "fir-logintest-9aa95",
+    "storage_bucket": "fir-logintest-9aa95.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:82207844535:android:0e733fcd32998fa5a30532",
+        "android_client_info": {
+          "package_name": "ramzi.eljabali.com"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9ns1RCyNpyAZKwxRlq1luKlZsw6q8ixg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
