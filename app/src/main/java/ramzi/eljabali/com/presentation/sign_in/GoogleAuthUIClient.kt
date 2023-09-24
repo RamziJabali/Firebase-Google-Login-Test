@@ -23,10 +23,10 @@ class GoogleAuthUIClient(
         val result = try {
             oneTapClient.beginSignIn(
                 buildSignInRequest()
-            ).await() // suspends the coroutine until sign in finishes
-        } catch (e: Exception) {
+            ).await()
+        } catch(e: Exception) {
             e.printStackTrace()
-            if (e is CancellationException) throw e
+            if(e is CancellationException) throw e
             null
         }
         return result?.pendingIntent?.intentSender
@@ -34,11 +34,10 @@ class GoogleAuthUIClient(
 
     suspend fun signInWithIntent(intent: Intent): SignInResult {
         val credential = oneTapClient.getSignInCredentialFromIntent(intent)
-        val googleIdToken = credential.googleIdToken // get the token from the credential
-        val googleCredential =
-            GoogleAuthProvider.getCredential(googleIdToken, null) // pass the google token and null
+        val googleIdToken = credential.googleIdToken
+        val googleCredentials = GoogleAuthProvider.getCredential(googleIdToken, null)
         return try {
-            val user = auth.signInWithCredential(googleCredential).await().user
+            val user = auth.signInWithCredential(googleCredentials).await().user
             SignInResult(
                 data = user?.run {
                     UserData(
@@ -49,9 +48,9 @@ class GoogleAuthUIClient(
                 },
                 errorMessage = null
             )
-        } catch (e: Exception) {
+        } catch(e: Exception) {
             e.printStackTrace()
-            if (e is CancellationException) throw e
+            if(e is CancellationException) throw e
             SignInResult(
                 data = null,
                 errorMessage = e.message
@@ -63,13 +62,13 @@ class GoogleAuthUIClient(
         try {
             oneTapClient.signOut().await()
             auth.signOut()
-        } catch (e: Exception) {
+        } catch(e: Exception) {
             e.printStackTrace()
-            if (e is CancellationException) throw e
+            if(e is CancellationException) throw e
         }
     }
 
-    fun getSignedInUser():UserData? = auth.currentUser?.run{
+    fun getSignedInUser(): UserData? = auth.currentUser?.run {
         UserData(
             userId = uid,
             userName = displayName,
@@ -78,14 +77,15 @@ class GoogleAuthUIClient(
     }
 
     private fun buildSignInRequest(): BeginSignInRequest {
-        return BeginSignInRequest.Builder().setGoogleIdTokenRequestOptions(
-            GoogleIdTokenRequestOptions.Builder()
-                .setSupported(true) //this method of authentication is supported
-                .setFilterByAuthorizedAccounts(false) // checks if you are signed in with a specific account if true, but false shows all accounts
-                .setServerClientId(context.getString(R.string.web_client_id)) // our webclient
-                .build()
-        )
-            .setAutoSelectEnabled(true) // this makes it so if you have one account it automatically signs in to that one google account
+        return BeginSignInRequest.Builder()
+            .setGoogleIdTokenRequestOptions(
+                GoogleIdTokenRequestOptions.builder()
+                    .setSupported(true)
+                    .setFilterByAuthorizedAccounts(false)
+                    .setServerClientId(context.getString(R.string.web_client_id))
+                    .build()
+            )
+            .setAutoSelectEnabled(true)
             .build()
     }
 }
